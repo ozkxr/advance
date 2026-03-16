@@ -7,7 +7,7 @@
 
   <mat-form-field appearance="outline">
     <mat-label>No. Registro</mat-label>
-    <input matInput formControlName="registry" placeholder="No. Registro" />
+    <input matInput formControlName="registry" placeholder="No. Registro" (blur)="onRegistryChange()" />
   </mat-form-field>
 
   <mat-form-field appearance="outline">

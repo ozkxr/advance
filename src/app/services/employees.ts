@@ -14,7 +14,7 @@ const EMPLOYEES_MOCK: Employee[] = [
 	providedIn: "root",
 })
 export class Employees {
-	findByRegistry(registry: string): Employee {
+	findByRegistry(registry: string): Employee | null {
 		return EMPLOYEES_MOCK.find((em) => em.registry === registry.trim()) ?? null;
 	}
 }
