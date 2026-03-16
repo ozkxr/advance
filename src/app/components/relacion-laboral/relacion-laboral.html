@@ -1,0 +1,17 @@
+<form [formGroup]="form">
+  <mat-form-field appearance="outline">
+    <mat-select formControlName="year">
+      <mat-option *ngFor="let year of yearOptions" [value]="year">{{ year }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>No. Registro</mat-label>
+    <input matInput formControlName="registry" placeholder="No. Registro" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nombre de profesor</mat-label>
+    <input matInput formControlName="teacherName" placeholder="Nombre de profesor" />
+  </mat-form-field>
+</form>
