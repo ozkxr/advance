@@ -1,17 +1,69 @@
-<form [formGroup]="form">
-  <mat-form-field appearance="outline">
-    <mat-select formControlName="year">
-      <mat-option *ngFor="let year of yearOptions" [value]="year">{{ year }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>DATOS</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form">
+      <mat-form-field appearance="outline">
+        <mat-select formControlName="year">
+          @for (year of yearOptions; track year) {
+          <mat-option [value]="year">{{ year }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>No. Registro</mat-label>
-    <input matInput formControlName="registry" placeholder="No. Registro" (blur)="onRegistryChange()" />
-  </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>No. Registro</mat-label>
+        <input matInput formControlName="registry" placeholder="No. Registro" (blur)="onRegistryChange()" />
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Nombre de profesor</mat-label>
-    <input matInput formControlName="teacherName" placeholder="Nombre de profesor" />
-  </mat-form-field>
-</form>
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre de profesor</mat-label>
+        <input matInput formControlName="teacherName" placeholder="Nombre de profesor" />
+      </mat-form-field>
+
+      <!-- Months table -->
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2">Mes</th>
+            <th colspan="2">Días Laborados</th>
+            <th rowspan="2">Puesto</th>
+            <th rowspan="2">Cargo</th>
+          </tr>
+          <tr>
+            <th>Del</th>
+            <th>Al</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="months">
+          @for (month of months.controls; track $index; let i = $index) {
+          <tr [formGroupName]="i">
+            <td>{{ monthNames[i] }}</td>
+            <td>
+
+                <input type="number" formControlName="startDay" min="1" [max]="month.get('endDay')?.value">
+            </td>
+            <td><input type="number" formControlName="endDay" min="1" [max]="month.get('lastDay')?.value"></td>
+            <td><input formControlName="position" /></td>
+            <td><input formControlName="rolePerformed" /></td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- Leave Table -->
+      <div>
+        <p>¿Gozó de licencia?</p>
+        <mat-radio-group formControlName="hasLeave">
+          <mat-radio-button [value]="false">No</mat-radio-button>
+          <mat-radio-button [value]="true">Sí</mat-radio-button>
+        </mat-radio-group>
+        @if (form.get('hasLeave')?.value === true) {
+        <textarea formControlName="leaveNotes" placeholder="Describa la licencia..."></textarea>
+        }
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

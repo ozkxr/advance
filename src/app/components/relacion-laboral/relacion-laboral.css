@@ -1,0 +1,54 @@
+:host {
+	display: block;
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 32px 24px;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #1565C0;
+  color: white;
+  padding: 10px;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+td {
+  border: 1px solid #E0E0E0;
+  padding: 4px;
+  vertical-align: middle;
+}
+
+tr:nth-child(odd) {
+  background-color: #FAFAFA;
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+td input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 6px 8px;
+  font-size: 14px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+td input:focus {
+  background-color: #E3F2FD;
+}

@@ -1,10 +1,14 @@
 import { Component, OnInit } from "@angular/core";
-import { ReactiveFormsModule, FormBuilder, FormGroup } from "@angular/forms";
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { NgFor, JsonPipe } from "@angular/common";
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from "@angular/material/card";
 import { Employees } from "../../services/employees";
+import { JsonPipe } from "@angular/common";
+
+
 
 @Component({
 	selector: "app-relacion-laboral",
@@ -13,7 +17,8 @@ import { Employees } from "../../services/employees";
 		MatFormFieldModule,
 		MatInputModule,
 		MatSelectModule,
-		NgFor,
+		MatRadioModule,
+		MatCardModule,
 		JsonPipe,
 	],
 	templateUrl: "./relacion-laboral.html",
@@ -22,11 +27,15 @@ import { Employees } from "../../services/employees";
 export class RelacionLaboral implements OnInit {
 	form!: FormGroup;
 	yearOptions: number[] = [];
+	readonly monthNames = [
+		'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+	];
 
 	constructor(
 		private fb: FormBuilder,
 		private employeesService: Employees,
-	) {}
+	) { }
 
 	ngOnInit(): void {
 		const currentYear = new Date().getFullYear();
@@ -37,6 +46,9 @@ export class RelacionLaboral implements OnInit {
 			year: [currentYear],
 			registry: [""],
 			teacherName: [""],
+			months: this.fb.array(Array.from({ length: 12 }, (_, i) => this.createMonthGroup(i, currentYear))),
+			hasLeave: [false],
+			leaveNotes: [''],
 		});
 	}
 
@@ -55,5 +67,21 @@ export class RelacionLaboral implements OnInit {
 		} else {
 			this.form.patchValue({ teacherName: "" });
 		}
+	}
+
+	private createMonthGroup(monthIndex: number, year: number): FormGroup {
+		const lastDay = new Date(year, monthIndex + 1, 0).getDate();
+		return this.fb.group({
+			startDay: [1],
+			endDay: [lastDay],
+			lastDay: [lastDay],
+			position: [''],
+			rolePerformed: [''],
+			active: [false],
+		});
+	}
+
+	get months(): FormArray {
+		return this.form.get('months') as FormArray;
 	}
 }
