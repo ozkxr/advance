@@ -1,28 +1,49 @@
-<mat-card appearance="outlined">
-  <mat-card-header>
-    <mat-card-title>DATOS</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="form">
-      <mat-form-field appearance="outline">
-        <mat-select formControlName="year">
-          @for (year of yearOptions; track year) {
-          <mat-option [value]="year">{{ year }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+<form [formGroup]="form">
 
-      <mat-form-field appearance="outline">
-        <mat-label>No. Registro</mat-label>
-        <input matInput formControlName="registry" placeholder="No. Registro" (blur)="onRegistryChange()" />
-      </mat-form-field>
+  <mat-card appearance="outlined">
+    <!-- DATA FORM -->
+    <mat-card-header>
+      <mat-card-title>Datos del Docente</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Nombre de profesor</mat-label>
-        <input matInput formControlName="teacherName" placeholder="Nombre de profesor" />
-      </mat-form-field>
+      <div class="data-grid">
+        <div class="field-row" style="grid-column: 1 / -1">
+          <label>AÑO:</label>
+          <mat-form-field subscriptSizing="dynamic" appearance="outline">
+            <mat-select formControlName="year">
+              @for (year of yearOptions; track year) {
+              <mat-option [value]="year">{{ year }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-      <!-- Months table -->
+        <div class="field-row">
+          <label>NO. REGISTRO:</label>
+          <mat-form-field subscriptSizing="dynamic" appearance="outline">
+            <input matInput formControlName="registry" placeholder="No. Registro" (blur)="onRegistryChange()" />
+          </mat-form-field>
+        </div>
+
+        <div class="field-row">
+          <label>NOMBRE DE PROFESOR:</label>
+          <mat-form-field subscriptSizing="dynamic" appearance="outline">
+            <input matInput formControlName="teacherName" placeholder="Nombre de profesor" />
+          </mat-form-field>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <!-- MONTHS TABLE -->
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Relación Laboral</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
       <table>
         <thead>
           <tr>
@@ -42,7 +63,7 @@
             <td>{{ monthNames[i] }}</td>
             <td>
 
-                <input type="number" formControlName="startDay" min="1" [max]="month.get('endDay')?.value">
+              <input type="number" formControlName="startDay" min="1" [max]="month.get('endDay')?.value">
             </td>
             <td><input type="number" formControlName="endDay" min="1" [max]="month.get('lastDay')?.value"></td>
             <td><input formControlName="position" /></td>
@@ -51,19 +72,49 @@
           }
         </tbody>
       </table>
+    </mat-card-content>
+  </mat-card>
+  <!-- LEAVE TEXTAREA -->
+  <mat-card appearance="outlined">
 
-      <!-- Leave Table -->
-      <div>
-        <p>¿Gozó de licencia?</p>
+    <mat-card-header>
+      <mat-card-title>Licencia</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="leave-section">
         <mat-radio-group formControlName="hasLeave">
           <mat-radio-button [value]="false">No</mat-radio-button>
           <mat-radio-button [value]="true">Sí</mat-radio-button>
         </mat-radio-group>
         @if (form.get('hasLeave')?.value === true) {
-        <textarea formControlName="leaveNotes" placeholder="Describa la licencia..."></textarea>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" style="width: 100%">
+          <textarea matInput formControlName="leaveNotes" rows="3" placeholder="Describa la licencia..."></textarea>
+        </mat-form-field>
         }
       </div>
+    </mat-card-content>
+  </mat-card>
+  <!-- SIGNATORIES -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Firmantes</mat-panel-title>
+    </mat-expansion-panel-header>
 
-    </form>
-  </mat-card-content>
-</mat-card>
+    <div formArrayName="signatories" class="signatories-flex">
+      <div [formGroupName]="0" class="field-row">
+        <label>Tesorero</label>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <input matInput formControlName="fullName">
+        </mat-form-field>
+      </div>
+      <div [formGroupName]="1" class="field-row">
+        <label>Director</label>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <input matInput formControlName="fullName">
+        </mat-form-field>
+      </div>
+    </div>
+
+  </mat-expansion-panel>
+
+</form>

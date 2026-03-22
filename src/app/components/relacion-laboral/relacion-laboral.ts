@@ -6,6 +6,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from "@angular/material/card";
 import { Employees } from "../../services/employees";
+import { MatExpansionModule } from '@angular/material/expansion';
 import { JsonPipe } from "@angular/common";
 
 
@@ -19,6 +20,7 @@ import { JsonPipe } from "@angular/common";
 		MatSelectModule,
 		MatRadioModule,
 		MatCardModule,
+		MatExpansionModule,
 		JsonPipe,
 	],
 	templateUrl: "./relacion-laboral.html",
@@ -49,6 +51,18 @@ export class RelacionLaboral implements OnInit {
 			months: this.fb.array(Array.from({ length: 12 }, (_, i) => this.createMonthGroup(i, currentYear))),
 			hasLeave: [false],
 			leaveNotes: [''],
+			signatories: this.fb.array([
+				this.fb.group({ fullName: ['TAE César Guzmán'] }),
+				this.fb.group({ fullName: ['Lic. Zoot. Merlin Wilfrido Osorio López'] }),
+			]),
+		});
+
+		// Subscribe to update month max day -- just for leap years
+		this.form.get('year')!.valueChanges.subscribe(year => {
+			this.months.controls.forEach((ctrl, i) => {
+				const lastDay = new Date(year, i + 1, 0).getDate();
+				ctrl.patchValue({ endDay: lastDay, lastDay: lastDay });
+			});
 		});
 	}
 

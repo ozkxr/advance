@@ -8,7 +8,7 @@
 form {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 8px;
 }
 
 table {
@@ -51,4 +51,80 @@ td input {
 
 td input:focus {
   background-color: #E3F2FD;
+}
+
+hr {
+	color: #EEEEEE;
+	margin: 16px 0px;
+}
+
+mat-card-title {
+  padding: 16px 0;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.field-row mat-form-field {
+  flex: 1;
+}
+
+.field-row label {
+  font-weight: 500;
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.leave-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #1565C0;
+}
+
+.signatory-input {
+  border: none;
+  border-bottom: 2px solid #E0E0E0;
+  padding: 6px 4px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  width: 200px;
+}
+
+.signatory-input:focus {
+  border-bottom-color: #1565C0;
+}
+
+.signatories-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
 }
