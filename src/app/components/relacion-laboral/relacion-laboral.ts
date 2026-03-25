@@ -1,15 +1,20 @@
 import { Component, OnInit } from "@angular/core";
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray } from "@angular/forms";
+import {
+	FormArray,
+	FormBuilder,
+	FormGroup,
+	ReactiveFormsModule,
+} from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { MatRadioModule } from '@angular/material/radio';
+import { MatRadioModule } from "@angular/material/radio";
 import { MatCardModule } from "@angular/material/card";
 import { Employees } from "../../services/employees";
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatExpansionModule } from "@angular/material/expansion";
+import { Pdf } from "../../services/pdf";
+import { MatButtonModule } from "@angular/material/button";
 import { JsonPipe } from "@angular/common";
-
-
 
 @Component({
 	selector: "app-relacion-laboral",
@@ -21,6 +26,7 @@ import { JsonPipe } from "@angular/common";
 		MatRadioModule,
 		MatCardModule,
 		MatExpansionModule,
+		MatButtonModule,
 		JsonPipe,
 	],
 	templateUrl: "./relacion-laboral.html",
@@ -30,14 +36,25 @@ export class RelacionLaboral implements OnInit {
 	form!: FormGroup;
 	yearOptions: number[] = [];
 	readonly monthNames = [
-		'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+		"Enero",
+		"Febrero",
+		"Marzo",
+		"Abril",
+		"Mayo",
+		"Junio",
+		"Julio",
+		"Agosto",
+		"Septiembre",
+		"Octubre",
+		"Noviembre",
+		"Diciembre",
 	];
 
 	constructor(
 		private fb: FormBuilder,
 		private employeesService: Employees,
-	) { }
+		private pdfService: Pdf,
+	) {}
 
 	ngOnInit(): void {
 		const currentYear = new Date().getFullYear();
@@ -48,17 +65,22 @@ export class RelacionLaboral implements OnInit {
 			year: [currentYear],
 			registry: [""],
 			teacherName: [""],
-			months: this.fb.array(Array.from({ length: 12 }, (_, i) => this.createMonthGroup(i, currentYear))),
+			months: this.fb.array(
+				Array.from({ length: 12 }, (_, i) =>
+					this.createMonthGroup(i, currentYear)),
+			),
 			hasLeave: [false],
-			leaveNotes: [''],
+			leaveNotes: [""],
 			signatories: this.fb.array([
-				this.fb.group({ fullName: ['TAE César Guzmán'] }),
-				this.fb.group({ fullName: ['Lic. Zoot. Merlin Wilfrido Osorio López'] }),
+				this.fb.group({ fullName: ["TAE César Guzmán"] }),
+				this.fb.group({
+					fullName: ["Lic. Zoot. Merlin Wilfrido Osorio López"],
+				}),
 			]),
 		});
 
 		// Subscribe to update month max day -- just for leap years
-		this.form.get('year')!.valueChanges.subscribe(year => {
+		this.form.get("year")!.valueChanges.subscribe((year) => {
 			this.months.controls.forEach((ctrl, i) => {
 				const lastDay = new Date(year, i + 1, 0).getDate();
 				ctrl.patchValue({ endDay: lastDay, lastDay: lastDay });
@@ -89,13 +111,17 @@ export class RelacionLaboral implements OnInit {
 			startDay: [1],
 			endDay: [lastDay],
 			lastDay: [lastDay],
-			position: [''],
-			rolePerformed: [''],
+			position: [""],
+			rolePerformed: [""],
 			active: [false],
 		});
 	}
 
 	get months(): FormArray {
-		return this.form.get('months') as FormArray;
+		return this.form.get("months") as FormArray;
+	}
+
+	generatePdf(): void {
+		this.pdfService.generate(this.form.value);
 	}
 }
