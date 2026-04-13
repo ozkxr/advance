@@ -54,7 +54,7 @@ export class RelacionLaboral implements OnInit {
 		private fb: FormBuilder,
 		private employeesService: Employees,
 		private pdfService: Pdf,
-	) {}
+	) { }
 
 	ngOnInit(): void {
 		const currentYear = new Date().getFullYear();
@@ -122,6 +122,13 @@ export class RelacionLaboral implements OnInit {
 	}
 
 	generatePdf(): void {
+		const { year, registry, teacherName } = this.form.value;
+
+		if (!year || !registry || !teacherName) {
+			alert('Por favor complete el año, registro y nombre del profesor antes de generar el PDF.');
+			return;
+		}
+
 		this.pdfService.generate(this.form.value);
 	}
 }

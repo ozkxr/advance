@@ -170,6 +170,10 @@ export class Pdf {
     const date = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
     doc.text(`Fecha de emisión: ${date}`, R, y, { align: 'right' });
 
-    doc.save('relacion-laboral.pdf');
+    if (data.registry && data.year) {
+      doc.save(`${data.registry}-${data.year}.pdf`);
+    } else {
+      doc.save('relacion-laboral.pdf');
+    }
   }
 }
